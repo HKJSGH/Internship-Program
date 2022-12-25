@@ -1,0 +1,10 @@
+ID,ModelID,Name,DataCategory,Description,IsHidden,TableStorageID,ModifiedTime,StructureModifiedTime,SystemFlags,ShowAsVariationsOnly,IsPrivate,DefaultDetailRowsDefinitionID,AlternateSourcePrecedence,RefreshPolicyID,CalculationGroupID,ExcludeFromModelRefresh,LineageTag,SourceLineageTag
+12,1,"FactFinalisedInvoicesDetailed","","",False,58,2021-04-23 00:41:05.796,2021-04-29 02:52:55.270,0,False,False,,0,,,False,"8c4cc4ee-135d-45da-a31f-7d48019217a1",""
+15,1,"DateTableTemplate_15dcd7f3-7cd9-4a6a-9c75-5c25918d15e1","","",True,60,2021-04-23 00:10:17.146,2021-04-23 00:10:16.193,2,False,True,,0,,,False,"5a00ac56-85f9-4fd5-a59b-5b5d4fffae02",""
+1062,1,"Customer","","",False,1090,2021-04-23 00:47:44.990,2021-05-02 13:23:18.263,0,False,False,,0,,,False,"2384c175-ac47-4318-ba02-760b829fb60a",""
+1199,1,"GroupedFinalisedInvoices","","",False,1229,2021-04-23 01:07:23.563,2021-04-23 01:07:23.563,0,False,False,,0,,,False,"dfbb21d2-33b3-4749-9280-b1dbdcd2472a",""
+2121,1,"Date","Time","",False,2127,2021-05-05 22:24:36.226,2021-04-23 01:36:49.600,2,False,False,,0,,,False,"4c175ee0-80e2-4c7a-b6d7-ad17e766b374",""
+3201,1,"LocalDateTable_f0e4c214-14af-4514-99f7-621b9e8f5d81","","",True,3248,2021-04-23 01:40:42.383,2021-04-23 01:40:42.383,2,True,False,,0,,,False,"ae188773-65e0-4fa7-a973-6bc5d99e2646",""
+9254,1,"Key Measure","","",False,9263,2021-05-05 13:25:08.586,2021-05-05 13:34:33.430,0,False,False,,0,,,False,"e87a9b60-d186-4213-b87a-65ffa841aa39",""
+13790,1,"Customer Rank","","",False,13807,2021-04-26 10:36:25.396,2021-05-02 13:37:55.500,0,False,False,,0,,,False,"36af94fb-8bea-4593-a1cb-635605c2fea0",""
+14780,1,"Key Measures - Harsh","","",False,14793,2021-05-05 13:34:42.066,2021-05-05 22:38:08.430,0,False,False,,0,,,False,"80fe1dff-22c4-4b92-9ac7-21701bda0560",""
