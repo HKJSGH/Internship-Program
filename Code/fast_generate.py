@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
 import os
+import itertools
 
 def fast_generate(File_number):
     path_head = 'F:\\yeye\\bi.data\data_extracted_from_flow_run1_2022_09_01.processed.deduped\data_extracted_from_flow_run1_2022_09_01.processed.deduped\\'
-    result_path = 'F:\\yifan\Project\FD_test\\'
+    result_path_head = 'F:\\yifan\Project\FD_test\\'
     sample_path = 'F:\\yifan\Project\TF_sample\\'
     Relationships_path = path_head + File_number + '\\_relationships.csv'
     names_relationships=['FromTableID','FromColumnID','ToTableID','ToColumnID']
@@ -85,11 +86,31 @@ def fast_generate(File_number):
     sample_candidate.remove(join_columns_name)
     if sample_candidate == []:
         return
-
+    #######################################################################               #f
+    # f_sample_candidate = table_many.columns.values.tolist()
+    # f_sample_candidate.remove(join_columns_name)
+    # f_sample_can = list(itertools.permutations(f_sample_candidate, 2))
+    # f_sample = []
+    # for n in range(len(f_sample_can)):
+    #     f_test = pd.DataFrame(pd.read_csv(table_many_path,usecols=f_sample_can[n]))
+    #     f_test_dict = f_test.set_index(f_sample_can[n][0]).T.to_dict('list')
+    #     for i in f_test_dict.values():
+    #         if (len(i)) != 1:
+    #             f_test_sample = f_test.sample(n=100,random_state=1,axis=0)
+    #             f_test_sample_dict = f_test_sample.set_index('Code').T.to_dict('list')
+    #             for j in f_test_sample_dict.values():
+    #                 if (len(j)) == 1:
+    #                     f_sample.append(f_sample_can[n])
+    #                     print('f_sample')
+    #                     break
+    # if f_sample == []:
+        return
+    ##############################################################################
     result = pd.merge(table_many,table_one,how="outer",on=join_columns_name)
 #     result_path = path_head + File_number + '\\'
-    result.to_csv(result_path + File_number +'.csv',index=False)
-
+    result_path = result_path_head + File_number +'.csv'
+    result.to_csv(result_path,index=False)
+    
     
     t_sample_can = [{join_columns_name,i} for i in sample_candidate]
     sample_path_f = sample_path + File_number
@@ -97,18 +118,35 @@ def fast_generate(File_number):
           os.mkdir(sample_path_f)
           
     pd.DataFrame(t_sample_can).to_csv(sample_path_f + '\\' + 't_sample.csv',index=False)
-    # print(f'test file has been created as {result_path}' + File_number +'.csv')
+    # pd.DataFrame(f_sample).to_csv(sample_path_f + '\\' + 'f_sample.csv',index=False)      
+    # 
+    f_sample_candidate = result.columns.values.tolist()
+    f_sample_candidate.remove(join_columns_name)
+    f_sample_can = list(itertools.permutations(f_sample_candidate, 2))
+    f_sample = []
+    for n in range(len(f_sample_can)):
+        f_test = pd.DataFrame(pd.read_csv(result_path,usecols=f_sample_can[n]))
+        f_test_dict = f_test.set_index(f_sample_can[n][0]).T.to_dict('list')
+        for i in f_test_dict.values():
+            if (len(i)) != 1:
+                print('maybe_f_sample')
+                f_test_sample = f_test.sample(n=20,axis=0)
+                f_test_sample_dict = f_test_sample.set_index(f_sample_can[n][0]).T.to_dict('list')
+                for j in f_test_sample_dict.values():
+                    if (len(j)) == 1:
+                        f_sample.append(f_sample_can[n])
+                        print(File_number + 'f_sample')
+                        break
+    pd.DataFrame(f_sample).to_csv(sample_path_f + '\\' + 'f_sample.csv',index=False)
 
 
 datasets = 'F:\\yeye\\bi.data\data_extracted_from_flow_run1_2022_09_01.processed.deduped\data_extracted_from_flow_run1_2022_09_01.processed.deduped'
-data_test_name = os.listdir(datasets)[10000:40000]
+data_test_name = os.listdir(datasets)[40100:41000]
 for i in data_test_name:
     try:
         fast_generate(i)
     except:
         pass
 
-for i in data_test_name:
-    fast_generate(i)
-
+fast_generate('100025102')
              

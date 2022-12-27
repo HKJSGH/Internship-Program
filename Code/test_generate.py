@@ -93,4 +93,5 @@ datasets = 'F:\\yeye\\bi.data\data_extracted_from_flow_run1_2022_09_01.processed
 data_test_name = os.listdir(datasets)[0:100]
 for i in data_test_name:
       test_generate(i)
+test_generate('100025102')
 

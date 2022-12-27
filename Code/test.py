@@ -1,6 +1,7 @@
 from  scipy.stats import chi2_contingency
 import numpy as np
 import pandas as pd
+import os
 
 file_name='F:\yifan\Project\_columns.csv'
 #names=['separ-length','separ-width','petal_length','petal_width','class']
@@ -20,4 +21,23 @@ for i in column_name:
     for j in column_name:
         kt = chi2_contingency(pd.crosstab(data_full[i],data_full[j]))
         print('卡方值=%.4f, p值=%.4f, 自由度=%i expected_frep=%s'%kt)
+        
+t_sample_path = 'F:\\yifan\Project\TF_sample'
+t_sample_names = os.listdir(t_sample_path)
 
+t_len = []
+
+for i in t_sample_names:
+    try:
+        t_path = t_sample_path + '\\' + i + '\\t_sample.csv'
+        new_len = len(pd.read_csv(t_path))
+        t_len.append(new_len)
+    except:
+        t_len.append(0)
+        pass
+    
+# t_path = 'F:\yifan\Project\TF_sample\\100071583\\t_sample.csv'
+# len(pd.read_csv(t_path))
+
+t_mean_number = sum(t_len)/len(t_len)
+print(t_mean_number)
