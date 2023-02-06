@@ -106,47 +106,70 @@ def fast_generate(File_number):
     # if f_sample == []:
         return
     ##############################################################################
-    result = pd.merge(table_many,table_one,how="outer",on=join_columns_name)
+    result = pd.merge(table_many,table_one,how="outer",on=join_columns_name,suffixes=('_many', None))
 #     result_path = path_head + File_number + '\\'
+    if len(result) <= 100:
+        return
     result_path = result_path_head + File_number +'.csv'
     result.to_csv(result_path,index=False)
     
     
     t_sample_can = [{join_columns_name,i} for i in sample_candidate]
-    sample_path_f = sample_path + File_number
-    if os.path.exists(sample_path_f) == False:
-          os.mkdir(sample_path_f)
+    sample_path_file = sample_path + File_number
+    if os.path.exists(sample_path_file) == False:
+          os.mkdir(sample_path_file)
           
-    pd.DataFrame(t_sample_can).to_csv(sample_path_f + '\\' + 't_sample.csv',index=False)
-    # pd.DataFrame(f_sample).to_csv(sample_path_f + '\\' + 'f_sample.csv',index=False)      
-    # 
-    f_sample_candidate = result.columns.values.tolist()
-    f_sample_candidate.remove(join_columns_name)
-    f_sample_can = list(itertools.permutations(f_sample_candidate, 2))
-    f_sample = []
-    for n in range(len(f_sample_can)):
-        f_test = pd.DataFrame(pd.read_csv(result_path,usecols=f_sample_can[n]))
-        f_test_dict = f_test.set_index(f_sample_can[n][0]).T.to_dict('list')
-        for i in f_test_dict.values():
-            if (len(i)) != 1:
-                print('maybe_f_sample')
-                f_test_sample = f_test.sample(n=20,axis=0)
-                f_test_sample_dict = f_test_sample.set_index(f_sample_can[n][0]).T.to_dict('list')
-                for j in f_test_sample_dict.values():
-                    if (len(j)) == 1:
-                        f_sample.append(f_sample_can[n])
-                        print(File_number + 'f_sample')
-                        break
-    pd.DataFrame(f_sample).to_csv(sample_path_f + '\\' + 'f_sample.csv',index=False)
+    pd.DataFrame(t_sample_can).to_csv(sample_path_file + '\\' + 't_sample.csv',index=False)
+    # pd.DataFrame(f_sample).to_csv(sample_path_file + '\\' + 'f_sample.csv',index=False)      
+    
+    # f_sample_candidate = result.columns.values.tolist()
+    # f_sample_candidate.remove(join_columns_name)
+    # f_sample_can = list(itertools.permutations(f_sample_candidate, 2))
+    # f_sample = []
+    # for n in range(len(f_sample_can)):
+    #     f_test = pd.DataFrame(pd.read_csv(result_path,usecols=f_sample_can[n]))
+    #     # f_test_dict = f_test.set_index(f_sample_can[n][0]).T.to_dict('list')
+    #     f_test_dict = {}
+    #     for l in range(len(f_test)):
+    #         k = f_test[f_sample_can[n][0]][l]
+    #         if k not in f_test_dict.keys():
+    #             f_test_dict[k] = []
+    #         v = f_test[f_sample_can[n][1]][l]
+    #         if v not in f_test_dict[k]:
+    #             f_test_dict[k].append(v) 
+    #     for i in f_test_dict.values():
+    #         if (len(i)) != 1:
+    #             f_test_sample = f_test.sample(n=100,axis=0)
+    #             f_test_sample = f_test_sample.reset_index(drop=True) 
+    #             f_test_sample_dict = {}
+    #             #########sample dict
+    #             for l in range(len(f_test_sample)):
+    #                 k = f_test_sample[f_sample_can[n][0]][l]
+    #                 if k not in f_test_sample_dict.keys():
+    #                     f_test_sample_dict[k] = []
+    #                 v = f_test_sample[f_sample_can[n][1]][l]
+    #                 if v not in f_test_sample_dict[k]:
+    #                     f_test_sample_dict[k].append(v)
+    #             ################           
+    #             f_token = True
+    #             for j in f_test_sample_dict.values():
+    #                 if (len(j)) != 1:
+    #                     f_token = False
+    #                     break
+    #             if f_token:
+    #                 f_sample.append(f_sample_can[n])
+    #             break  
+    # pd.DataFrame(f_sample).to_csv(sample_path_file + '\\' + 'f_sample.csv',index=False)
 
+# fast_generate('100025102')
 
 datasets = 'F:\\yeye\\bi.data\data_extracted_from_flow_run1_2022_09_01.processed.deduped\data_extracted_from_flow_run1_2022_09_01.processed.deduped'
-data_test_name = os.listdir(datasets)[40100:41000]
+data_test_name = os.listdir(datasets)[1000:2000]
 for i in data_test_name:
     try:
         fast_generate(i)
     except:
         pass
 
-fast_generate('100025102')
+
              

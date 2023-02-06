@@ -1,0 +1,96 @@
+import numpy as np
+import pandas as pd
+import random
+import itertools
+import shutil
+import os
+
+
+File_number = '100025102'
+sample_path = 'F:\\yifan\Project\TF_sample\\'
+sample_path_file = sample_path + File_number
+result_path =  'F:\\yifan\Project\FD_test\\' + File_number +'.csv'
+result = pd.DataFrame(pd.read_csv(result_path))
+if len(result) <= 100:
+    shutil.rmtree(sample_path + File_number)
+    print('samples < 100')
+    # return
+f_sample_candidate = result.columns.values.tolist()
+if len(f_sample_candidate) > 10:
+    f_sample_candidate = random.sample(f_sample_candidate, 10)
+# f_sample_candidate.remove(join_columns_name)
+f_sample_can = list(itertools.permutations(f_sample_candidate, 2))
+f_sample = []
+for n in range(len(f_sample_can)):
+    f_test = pd.DataFrame(pd.read_csv(result_path,usecols=f_sample_can[n]))
+    # f_test = f_test[pd.isnull(f_test[f_sample_can[n][0]])==False] 
+    # f_test = f_test[pd.isnull(f_test[f_sample_can[n][1]])==False]      
+    # f_test_dict = f_test.set_index(f_sample_can[n][0]).T.to_dict('list')
+    f_test_dict = {}
+    for l in range(len(f_test)):
+        k = f_test[f_sample_can[n][0]][l]
+        if pd.isnull(k) == False:
+            if k not in f_test_dict.keys():
+                f_test_dict[k] = []
+            v = f_test[f_sample_can[n][1]][l]
+            if pd.isnull(v) == False:
+                if v not in f_test_dict[k]:
+                    f_test_dict[k].append(v)    
+    for i in f_test_dict.values():
+        if (len(i)) != 1:
+            f_test_sample = f_test.sample(n=100,axis=0)
+            f_test_sample = f_test_sample.reset_index(drop=True) 
+            f_test_sample_dict = {}
+            #########sample dict
+            for l in range(len(f_test_sample)):
+                if pd.isnull(k) == False:
+                    k = f_test_sample[f_sample_can[n][0]][l]
+                    if k not in f_test_sample_dict.keys():
+                        f_test_sample_dict[k] = []
+                    v = f_test_sample[f_sample_can[n][1]][l]
+                    if pd.isnull(v) == False:
+                        if v not in f_test_sample_dict[k]:
+                            f_test_sample_dict[k].append(v) 
+            ################           
+            f_token = True
+            for j in f_test_sample_dict.values():
+                if (len(j)) != 1:
+                    f_token = False
+                    break
+            if f_token:
+                f_sample.append(f_sample_can[n])
+            break  
+if f_sample != []:
+    pd.DataFrame(f_sample).to_csv(sample_path_file + '\\' + 'f_sample.csv',index=False)
+else:
+    shutil.rmtree(sample_path + File_number) 
+    print('No f_sample')
+
+
+t_sample_path = 'F:\\yifan\Project\TF_sample'
+t_sample_names = os.listdir(t_sample_path)[0:125]
+t_len = []
+for i in t_sample_names:
+    try:
+        t_path = t_sample_path + '\\' + i + '\\t_sample.csv'
+        new_len = len(pd.read_csv(t_path))
+        t_len.append(new_len)
+    except:
+        t_len.append(0)
+        pass
+sum(t_len)/len(t_len)
+
+f_sample_path = 'F:\\yifan\Project\TF_sample'
+f_sample_names = os.listdir(f_sample_path)[0:125]
+f_len = []
+for i in f_sample_names:
+    try:
+        f_path = f_sample_path + '\\' + i + '\\f_sample.csv'
+        new_flen = len(pd.read_csv(f_path))
+        f_len.append(new_flen)
+    except:
+        f_len.append(0)
+        pass
+sum(f_len)/len(f_len)
+sum(f_len)
+sum(t_len)
